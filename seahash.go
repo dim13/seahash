@@ -7,25 +7,8 @@ import "hash"
 const Size = 8
 
 type digest struct {
-	sum, a, b, c, d uint64
-}
-
-// New returns a new hash.Hash64 computing SeaHash
-func New() hash.Hash64 {
-	return &digest{
-		0,
-		0x16f11fe89b0d677c,
-		0xb480a793d8e6c86c,
-		0x6fe2e5aaf078ebc9,
-		0x14f994a4c5259381,
-	}
-}
-
-func diffuse(x uint64) uint64 {
-	x *= 0x6eed0e9da4d94a4f
-	x ^= (x >> 32) >> (x >> 60)
-	x *= 0x6eed0e9da4d94a4f
-	return x
+	a, b, c, d uint64
+	n          int
 }
 
 func (d *digest) Write(p []byte) (n int, err error) {
@@ -43,7 +26,7 @@ func (d *digest) Write(p []byte) (n int, err error) {
 		d.a, d.b, d.c, d.d = d.b, d.c, d.d, diffuse(d.a^x)
 		p = q
 	}
-	d.sum = diffuse(d.a ^ d.b ^ d.c ^ d.d ^ uint64(n))
+	d.n += n
 	return n, nil
 }
 
@@ -55,7 +38,37 @@ func (d *digest) Sum(b []byte) []byte {
 	return b
 }
 
-func (d *digest) Reset()         { d.sum = 0 }
-func (d *digest) Size() int      { return Size }
-func (d *digest) BlockSize() int { return 1 }
-func (d *digest) Sum64() uint64  { return d.sum }
+func (d *digest) Reset() {
+	*d = digest{
+		a: 0x16f11fe89b0d677c,
+		b: 0xb480a793d8e6c86c,
+		c: 0x6fe2e5aaf078ebc9,
+		d: 0x14f994a4c5259381,
+	}
+}
+
+func (d *digest) Size() int {
+	return Size
+}
+
+func (d *digest) BlockSize() int {
+	return 1
+}
+
+func (d *digest) Sum64() uint64 {
+	return diffuse(d.a ^ d.b ^ d.c ^ d.d ^ uint64(d.n))
+}
+
+func diffuse(x uint64) uint64 {
+	x *= 0x6eed0e9da4d94a4f
+	x ^= (x >> 32) >> (x >> 60)
+	x *= 0x6eed0e9da4d94a4f
+	return x
+}
+
+// New returns a new hash.Hash64 computing SeaHash
+func New() hash.Hash64 {
+	d := &digest{}
+	d.Reset()
+	return d
+}
