@@ -15,9 +15,7 @@ func TestHash(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(tc.s, func(t *testing.T) {
-			d := New()
-			d.Write([]byte(tc.s))
-			if sum := d.Sum64(); sum != tc.n {
+			if sum := SumString(tc.s); sum != tc.n {
 				t.Errorf("got %v, want %v", sum, tc.n)
 			}
 		})
@@ -42,10 +40,8 @@ func TestNotEqual(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(tc.b, func(t *testing.T) {
-			a, b := New(), New()
-			a.Write([]byte(tc.a))
-			b.Write([]byte(tc.b))
-			if a.Sum64() == b.Sum64() {
+			if SumString(tc.a) == SumString(tc.b) {
+
 				t.Fail()
 			}
 		})
@@ -64,10 +60,7 @@ func TestZeroSenitive(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("% x", tc.b), func(t *testing.T) {
-			a, b := New(), New()
-			a.Write(tc.a)
-			b.Write(tc.b)
-			if a.Sum64() == b.Sum64() {
+			if Sum(tc.a) == Sum(tc.b) {
 				t.Fail()
 			}
 		})

@@ -72,3 +72,13 @@ func New() hash.Hash64 {
 	d.Reset()
 	return d
 }
+
+func Sum(p []byte) uint64 {
+	d := New()
+	d.Write(p)
+	return d.Sum64()
+}
+
+func SumString(s string) uint64 {
+	return Sum([]byte(s))
+}
