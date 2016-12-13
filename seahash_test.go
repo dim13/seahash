@@ -76,7 +76,8 @@ func TestZeroSenitive(t *testing.T) {
 
 func BenchmarkHash(b *testing.B) {
 	d := New()
+	p := []byte("to be or not to be")
 	for i := 0; i < b.N; i++ {
-		d.Write([]byte("to be or not to be"))
+		d.Write(p)
 	}
 }
