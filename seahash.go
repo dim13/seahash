@@ -23,9 +23,7 @@ func New() hash.Hash64 {
 
 func diffuse(x uint64) uint64 {
 	x *= 0x6eed0e9da4d94a4f
-	a := x >> 32
-	b := x >> 60
-	x ^= a >> b
+	x ^= (x >> 32) >> (x >> 60)
 	x *= 0x6eed0e9da4d94a4f
 	return x
 }
