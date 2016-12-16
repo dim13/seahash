@@ -40,7 +40,7 @@ func TestNotEqual(t *testing.T) {
 		{"ab", "bb"},
 	}
 	for _, tc := range testCases {
-		t.Run(tc.b, func(t *testing.T) {
+		t.Run(fmt.Sprintf("%v %v", tc.a, tc.b), func(t *testing.T) {
 			t.Parallel()
 			if SumString(tc.a) == SumString(tc.b) {
 				t.Fail()
@@ -60,7 +60,7 @@ func TestZeroSenitive(t *testing.T) {
 		{[]byte{0, 0, 0}, []byte{0, 0, 0, 0, 0}},
 	}
 	for _, tc := range testCases {
-		t.Run(fmt.Sprintf("% x", tc.b), func(t *testing.T) {
+		t.Run(fmt.Sprintf("%x %x", tc.a, tc.b), func(t *testing.T) {
 			t.Parallel()
 			if Sum(tc.a) == Sum(tc.b) {
 				t.Fail()
