@@ -39,12 +39,11 @@ func (d *digest) Sum(b []byte) []byte {
 }
 
 func (d *digest) Reset() {
-	*d = digest{
-		a: 0x16f11fe89b0d677c,
-		b: 0xb480a793d8e6c86c,
-		c: 0x6fe2e5aaf078ebc9,
-		d: 0x14f994a4c5259381,
-	}
+	d.a = 0x16f11fe89b0d677c
+	d.b = 0xb480a793d8e6c86c
+	d.c = 0x6fe2e5aaf078ebc9
+	d.d = 0x14f994a4c5259381
+	d.n = 0
 }
 
 func (d *digest) Size() int {
@@ -68,7 +67,7 @@ func diffuse(x uint64) uint64 {
 
 // New returns a new hash.Hash64 computing SeaHash
 func New() hash.Hash64 {
-	d := &digest{}
+	d := new(digest)
 	d.Reset()
 	return d
 }
