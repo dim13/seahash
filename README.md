@@ -1,10 +1,11 @@
 # SeaHash
 
-[![GoDoc](https://godoc.org/github.com/dim13/seahash?status.svg)](https://godoc.org/github.com/dim13/seahash)
-[![Build](https://github.com/dim13/seahash/workflows/build/badge.svg)](https://github.com/dim13/seahash/actions)
+A Go implementation of [SeaHash][1] algorithm. [See also][2].
 
-A Go implementation of [SeaHash](https://github.com/ticki/tfs/tree/master/seahash) algorithm. ([See also](https://ticki.github.io/blog/seahash-explained/))
+# Benchmark (Air/M1)
 
-# Benchmark
+	BenchmarkHash-8   	80886975	        14.75 ns/op	       0 B/op	       0 allocs/op
 
-	BenchmarkHash-8         50000000                22.2 ns/op             0 B/op          0 allocs/op
+[1]: https://github.com/ticki/tfs/tree/master/seahash
+[2]: https://ticki.github.io/blog/seahash-explained/
+
